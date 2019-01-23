@@ -6,8 +6,8 @@ services:
 env:
   global:
   - PINS="batsat:."
-  - DISTRO="ubuntu"
-  - PRE_INSTALL_HOOK="sudo apt-get update && sudo apt-get install cargo -y && rustc --version"
+  - DISTRO="alpine"
+  - PRE_INSTALL_HOOK="apk add cargo"
   matrix:
   - PACKAGE="batsat" OCAML_VERSION="4.03"
   - PACKAGE="batsat" OCAML_VERSION="4.04"
