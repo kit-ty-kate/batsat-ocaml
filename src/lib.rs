@@ -12,6 +12,11 @@ use std::ops;
 
 use batsat::{Var,Lit,lbool,SolverInterface,BasicSolver as InnerSolver};
 
+struct CB {
+    n_restarts: usize,
+    n_props: usize,
+}
+
 pub struct Solver {
     s: InnerSolver,
     vars: Vec<Var>, // int->var
@@ -238,6 +243,29 @@ caml!(ml_batsat_nconflicts, |ptr|, <res>, {
         res = Value::isize(r as isize);
     })
 } -> res);
+
+caml!(ml_batsat_nprops, |ptr|, <res>, {
+    with_solver!(solver, ptr, {
+        let r = solver.s.num_propagations();
+        res = Value::isize(r as isize);
+    })
+} -> res);
+
+caml!(ml_batsat_ndecisions, |ptr|, <res>, {
+    with_solver!(solver, ptr, {
+        let r = solver.s.num_decisions();
+        res = Value::isize(r as isize);
+    })
+} -> res);
+
+/*
+caml!(ml_batsat_nrestarts, |ptr|, <res>, {
+    with_solver!(solver, ptr, {
+        let r = solver.s.num_restarts();
+        res = Value::isize(r as isize);
+    })
+} -> res);
+*/
 
 caml!(ml_batsat_n_proved, |ptr|, <res>, {
     with_solver!(solver, ptr, {
